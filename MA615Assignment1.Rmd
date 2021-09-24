@@ -67,7 +67,7 @@ Run this code to use the function.
 #library(esquisse)
 
 #answer: adjustment of the data
-cyl_adjust<-as.factor(cyl)
+cyl_adjust<-as.factor(mtcars_mpg2$cyl)
 mtcars_mpg2<-cbind(mtcars_mpg2,cyl_adjust)
 
 #esquisser(data = mtcars_mpg2, viewer = "browser")
