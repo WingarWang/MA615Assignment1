@@ -7,62 +7,108 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+```{r}
 library(tidyverse)
 
 # call built-in data mtcars.
 data(mtcars)
+```
+Tidyverse is a coherent packet operating system for data manipulation, 
+exploration and visualization with a common design philosophy.
 
+```{r}
 # Select only car models where mpg<20
 mtcars_mpg2 <- mtcars[mtcars$mpg < 20,]
-
+mtcars_mpg2
 
 # Reduce the variables to mpg, cyl, disp, hp, gears
 mtcars_mpg2 <- mtcars_mpg2[, c(1,2,3,4,10)]
+mtcars_mpg2
 
+#just a wrong try: class(mtcars$cyl)
+#just a wrong try: x1<-as.factor(mtcars$cyl)
+#just a wrong try: or x1<-as.factor(mtcars$cyl)
+#just a wrong try: class(x1)
+#just a wrong try: mtcars_mpg2<-data.frame(mtcars_mpg2)
+#just a wrong try: x2<-data.frame(x1)
+#just a wrong try: names(x2)<-c("factor")
+#just a wrong try: x3<-cbind(mtcars_mpg2,xx) 
+#cannot bind, because the number are not same.
+#just a wrong try: x3
+
+#wrong try again: mtcars_mpg2<-data.frame(mtcars_mpg2)
+#wrong try again: xx<-as.factor(mtcars_mpg2$cyl)
+#wrong try again: x1<-data.frame(xx)
+#wrong try again: x2<-cbind(mtcars_mpg2,x1)
+```
+Select uses dataframe[dataframe$onedata < x, ]
+Reduce uses dataframe[ ,c(residual)]
+
+```{r}
 # read the R file hand_functions.R so that it can be used
 # notice that with echo = TRUE 
 source(file = "hand_functions.R", echo = TRUE)
+```
+"hand_functions.R" is a function and you need to run it so that you can operate.
 
+Echo =TRUE means they will be included in the final rendered version.
+It will specify any global settings to be applied to the R Markdown script.
+
+Echo =FALSE also is a parameter that Knitr will recognize, 
+means the code itself will not appear in the final document.
+
+```{r}
 # Now use the function from hand_functions.R
-
 sp_out <- sum_special(mtcars_mpg2)
+```
+Run this code to use the function.
 
+```{r}
+#library(esquisse)
 
-# library(esquisse)
-# 
-# esquisser(data = mtcars_mpg2, viewer = "browser")
+#answer: adjustment of the data
+cyl_adjust<-as.factor(cyl)
+mtcars_mpg2<-cbind(mtcars_mpg2,cyl_adjust)
 
+#esquisser(data = mtcars_mpg2, viewer = "browser")
+```
+When you need to use Esquisse, input "library(esquisse)" 
+and "esquisser(data = mtcars_mpg2, viewer = "browser")".
+If you don't use it, just add "#" before it,
+otherwise it will run and get stuck.
 
-
+```{r}
 ggplot(mtcars_mpg2) +
   aes(x = disp, y = mpg) +
   geom_point(shape = "bullet", size = 4L, colour = "#B22222") +
   geom_smooth(span = 0.5) +
   theme_minimal()
+```
+These operations are manually adjusted in Esquisse.
 
+"geom_point" represents point plot.
 
+"geom_smooth" represents a smoothing line in order to see what the trends look like.
+
+"theme_minimal()" is a minimalistic theme with no background annotations.
+
+```{r}
 # note that this boxplot cannot be made with esquisse() unless
 # the data is adjusted.  What adjustment is needed?
 
-
+#answer: create cyl_adjust<-as.factor(cyl), then add cyl_adjust to mtcars_mpg2
 ggplot(mtcars_mpg2, aes(x=as.factor(cyl), y=mpg)) + 
   geom_boxplot(fill="slateblue", alpha=0.2) + 
   xlab("cyl")
+
+#use adjustment in RStudio or Esquisse:
+#ggplot(mtcars_mpg2, aes(x=cyl_adjust, y=mpg)) 
+#+ geom_boxplot(fill="slateblue", alpha=0.2) + xlab("cyl")
+```
+"geom_boxplot" represents box plot.
+
+In my opinion, Esquisse can't draw this boxplot because there is no as.factor(cyl)
+in Esquisse. In order to solve this issue, I create a cyl_adjust in mtcars_mpg2
+so that Esquisse appears cyl_adjust which means as.factor(cyl) now. 
+Put cyl_adjust in x and mpg in y, then choose boxplot mode, the issue works out.
 
