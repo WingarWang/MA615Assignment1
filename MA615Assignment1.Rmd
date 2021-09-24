@@ -1,6 +1,6 @@
 ---
 title: "MA615Assignment1"
-output: html_document
+output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
